@@ -1,12 +1,16 @@
+from abc import abstractmethod
+
 import pygame
 
-import Game
+import Display
+from MouseListener import MouseListener
 
 
 class Button:
 
     #Változók
 
+    fontPath = "pygame/calibrib.ttf" #Font elérési útja
     text = "" #Gomb szövege
     posX = 0 #X koordináta
     posY = 0 #Y koordináta
@@ -14,8 +18,11 @@ class Button:
     height = 0 #Magasság pixelekben
     color = (200,200,200) #A gomb alapértelmezett színe (RGB skálán, ez például nem olyan fehér)
     color_hover = (255,255,255) #A gomb színe, ha rajta van az egér (RGB skálán, ez például fehér)
+    font_color = (0,0,0) #A betű színe, alapértelmezetten fekete
+    font_size = 18 #A betű mérete, alapértelmezetten 18
     mousePosition = pygame.mouse.get_pos() #Kurzor pontos koordinátái
     mouseClick = pygame.mouse.get_pressed() #Kurzos kattintása, hasonló mint a ClickListener
+    mouseListener = MouseListener()
 
     global clicked #True értéket vesz fel ha rákattintottak
 
@@ -99,17 +106,50 @@ class Button:
     def setHeight(self, height):
         self.setSize(self.width, height)
 
+    # Betűszín módosítása
+    def setFontColor(self, color):
+        self.font_color = color
+
+    def setFontSize(self, size):
+        self.font_size = size
+
+    # Gomb betűtípusának módosítása
+    def setFont(self, fontPath):
+        self.font = pygame.font.Font(fontPath, 18)
+
+    def getTextSurface(self, text, font):
+        textSurface = font.render(text, True, self.font_color)
+        return textSurface, textSurface.get_rect()
+
     # Kirajzolás a képernyőre, minden alkalommal megkell hívni
     def show(self):
-        if self.posX + self.width > self.mousePosition[0] > self.posX and self.posY + self.height > self.mousePosition[1] > self.posY:
+        self.act()
+        self.mouseListener.update(self.width,self.height,self.posX,self.posY)
+        if self.mouseListener.onHover:
             # Rajt van a kurzor
-            pygame.draw.rect(Game.display, self.color_hover, (self.posX, self.posY, self.width, self.height))
+            pygame.draw.rect(Display.display, self.color_hover, (self.posX, self.posY, self.width, self.height))
 
             # Rá is kattintottak
-            if self.mouseClick[0] == 1: self.clicked = True
+            if self.mouseListener.onClick:
+                self.clicked()
 
         else:
             # Nincs rajt a kurzor
-            pygame.draw.rect(Game.display, self.color, (self.posX, self.posY, self.width, self.height))
+            pygame.draw.rect(Display.display, self.color, (self.posX, self.posY, self.width, self.height))
+
+        font = pygame.font.Font(self.fontPath, self.font_size)
+        textSurface, textBox = self.getTextSurface(self.text, font)
+        textBox.center = ((self.posX + (self.width / 2)), (self.posY + (self.height / 2)))
+        Display.display.blit(textSurface, textBox)
+
+    # Klikkesedésnél fut le
+    @abstractmethod
+    def clicked(self):
+        ...
+
+    # Minden képfrissítésnél lefut
+    @abstractmethod
+    def act(self):
+        ...
 
 

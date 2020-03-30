@@ -1,5 +1,5 @@
 import pygame
-import Game
+import Display
 
 
 class Label:
@@ -39,4 +39,4 @@ class Label:
 
     # Kirajzolás a képernyőre, minden alkalommal megkell hívni
     def show(self):
-        Game.display.blit(self.textRenderer, (self.posX, self.posY))
+        Display.display.blit(self.textRenderer, (self.posX, self.posY))

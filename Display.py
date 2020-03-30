@@ -1,7 +1,7 @@
 import pygame
 
 
-class Game:
+class Display:
     gameName = ""
     displayWidth = 800  # Az ablak szélessége
     displayHeight = 600  # Az ablak magassága
@@ -9,9 +9,17 @@ class Game:
 
     fps = pygame.time.Clock()
 
+    # Új ablak létrehozása, alapértelmezetten 800x600-as felbontással
     def __init__(self):
         pygame.display.set_caption(self.gameName)  # Ablak címe
-        display = pygame.display.set_mode((self.displayWidth, self.displayHeight))  # Ablak mérete
+        self.display = pygame.display.set_mode((self.displayWidth, self.displayHeight)) # Ablak létrehozása
+
+    # Úgy hozzuk létre az ablakot, hogy paraméterben megadjuk a méreteit
+    def __init__(self, displayWidth, displayHeight):
+        self.displayWidth = displayWidth
+        self.displayHeight = displayHeight
+        pygame.display.set_caption(self.gameName)  # Ablak címe
+        self.display = pygame.display.set_mode((self.displayWidth, self.displayHeight))  # Ablak létrehozása
 
     # Ablak ikonjának módosítása
     # @param path: Az ikon elérési útja
