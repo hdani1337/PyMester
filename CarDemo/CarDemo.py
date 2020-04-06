@@ -1,40 +1,47 @@
 import pygame
 
 from ParentClasses.Actor import Actor
+from ParentClasses.Button import Button
 from ParentClasses.Display import Display
+from ParentClasses.Label import Label
 
-display = Display(800, 600) # Képeernyő egy alap felbontással
-kocsi = Actor(display, 'car.png') # Kocsi, egyszerű actor példány
+pygame.init()
+
+display = Display(800, 600)  # Képeernyő egy alap felbontással
+kocsi = Actor(display, 'car.png')  # Kocsi, egyszerű actor példány
+gomb = Button(display, "asd")
+szoveg = Label(display, "Teszt")
 
 
 def game():
-    xChange = 0 # Autó X koordinátájának változása
-    yChange = 0 # Autó Y koordinátájának változása
+    xChange = 0  # Autó X koordinátájának változása
+    yChange = 0  # Autó Y koordinátájának változása
+    szoveg.setPosition(100,200)
 
-    #Végtelen ciklus
+    # Végtelen ciklus
     while True:
-        #Események vizsgálása
+        # Események vizsgálása
         for event in pygame.event.get():
-            #Ha a játékos kiakar lépni, engedjük neki
+            # Ha a játékos kiakar lépni, engedjük neki
             if event.type == pygame.QUIT:
                 pygame.quit()  # Álljon le a program
                 quit()  # És záródjon be az ablak
 
-            #Ha a játékos lenyom egy billentyűt
+            # Ha a játékos lenyom egy billentyűt
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:#BALRA
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:  # BALRA
                     xChange = -9
 
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:#JOBBRA
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:  # JOBBRA
                     xChange = 9
 
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s:#LE
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:  # LE
                     yChange = 9
 
-                if event.key == pygame.K_UP or event.key == pygame.K_w:#FEL
+                if event.key == pygame.K_UP or event.key == pygame.K_w:  # FEL
                     yChange = -9
 
-            #Ha a játékos elenged egy billentyűt
+            # Ha a játékos elenged egy billentyűt
             if event.type == pygame.KEYUP:
                 # Ha nem nyomjuk az irányító gombokat, akkor nullázódjon le a mozgatás
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_a or event.key == pygame.K_d:
@@ -49,10 +56,12 @@ def game():
 
 def update():
     display.display.fill((0, 0, 0))  # Minden egyes alkalommal teljesen kiürítjül a képernyőt fekete színnel, hogy ne maradjanak ott az autó előző pozíciói
-    kocsi.show() # Rajzoljuk ki az autót
+    kocsi.show()  # Rajzoljuk ki az autót
+    gomb.show()
+    szoveg.show()
     pygame.display.update()  # Frissítjuk a képet
     display.fps.tick(60)  # Másodpercenkénti képfrissítés száma
 
 
-display.setTitle("PyMester Demo") # Ablak címének átállítása
-game() # Meghívjuk a game metódust, ami a végtelen ciklus miatt addig fut amíg le nem állítjuk a programot
+display.setTitle("PyMester Demo")  # Ablak címének átállítása
+game()  # Meghívjuk a game metódust, ami a végtelen ciklus miatt addig fut amíg le nem állítjuk a programot

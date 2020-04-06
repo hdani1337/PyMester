@@ -13,6 +13,8 @@ class MouseListener:
         self.mouseClick = pygame.mouse.get_pressed()
 
     def update(self, actorWidth, actorHeight, actorX, actorY):
+        self.mousePosition = pygame.mouse.get_pos()
+        self.mouseClick = pygame.mouse.get_pressed()
         # Rajt az egér az actoron
         if actorX + actorWidth > self.mousePosition[0] > actorX and actorY + actorHeight > self.mousePosition[1] > actorY:
             self.onHover = True
