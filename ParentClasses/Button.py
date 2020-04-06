@@ -8,9 +8,9 @@ from ParentClasses.MouseListener import MouseListener
 class Button:
     # Változók
 
-    display = ""  # Képernyő
+    display = None  # Képernyő
     fontPath = "E:/Python/Mester/ParentClasses/assets/calibrib.ttf"  # Font elérési útja
-    font = ""
+    font = None
     text = ""  # Gomb szövege
     posX = 0  # X koordináta
     posY = 0  # Y koordináta
@@ -20,11 +20,7 @@ class Button:
     color_hover = (255, 255, 255)  # A gomb színe, ha rajta van az egér (RGB skálán, ez például fehér)
     font_color = (0, 0, 0)  # A betű színe, alapértelmezetten fekete
     font_size = 18  # A betű mérete, alapértelmezetten 18
-    mousePosition = ""  # Kurzor pontos koordinátái
-    mouseClick = ""  # Kurzos kattintása, hasonló mint a ClickListener
-    mouseListener = ""
-
-    global clicked  # True értéket vesz fel ha rákattintottak
+    mouseListener = None
 
     def __init__(self, display, text="", posX=0, posY=0, width=100, height=50, color=(255, 255, 255),
                  color_hover=(200, 200, 200)):
@@ -42,8 +38,6 @@ class Button:
 
     def initMouse(self):
         if self.display != None:
-            self.mousePosition = pygame.mouse.get_pos()
-            self.mouseClick = pygame.mouse.get_pressed()
             self.mouseListener = MouseListener()
 
     # Új pozíció beállítása
