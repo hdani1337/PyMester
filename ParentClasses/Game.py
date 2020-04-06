@@ -1,29 +1,29 @@
 from abc import abstractmethod
 
 
-class Game():
+class Game:
 
     # Végtelenciklus előtt fut le
     @abstractmethod
     def beforeRun(self):
         ...
 
-    #Képfrissítés előtt fut le
+    # Képfrissítés előtt fut le
     @abstractmethod
     def beforeUpdate(self):
         ...
 
-    #Képfrissítés
+    # Képfrissítés
     @abstractmethod
     def update(self):
         ...
 
-    #Képfrissítés után fut le
+    # Képfrissítés után fut le
     @abstractmethod
     def afterUpdate(self):
         ...
 
-    #Végtelenciklus
+    # Végtelenciklus
     def run(self):
         try:
             self.beforeRun()

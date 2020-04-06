@@ -1,4 +1,6 @@
+import os
 from abc import abstractmethod
+from pathlib import Path
 
 import pygame
 
@@ -9,21 +11,19 @@ class Button:
     # Változók
 
     display = None  # Képernyő
-    fontPath = "E:/Python/Mester/ParentClasses/assets/calibrib.ttf"  # Font elérési útja
     font = None
     text = ""  # Gomb szövege
     posX = 0  # X koordináta
     posY = 0  # Y koordináta
     width = 0  # Szélesség pixelekben
     height = 0  # Magasság pixelekben
-    color = (200, 200, 200)  # A gomb alapértelmezett színe (RGB skálán, ez például nem olyan fehér)
-    color_hover = (255, 255, 255)  # A gomb színe, ha rajta van az egér (RGB skálán, ez például fehér)
-    font_color = (0, 0, 0)  # A betű színe, alapértelmezetten fekete
+    color = None  # A gomb alapértelmezett színe (RGB skálán, ez például nem olyan fehér)
+    color_hover = None  # A gomb színe, ha rajta van az egér (RGB skálán, ez például fehér)
+    font_color = None  # A betű színe, alapértelmezetten fekete
     font_size = 18  # A betű mérete, alapértelmezetten 18
     mouseListener = None
 
-    def __init__(self, display, text="", posX=0, posY=0, width=100, height=50, color=(255, 255, 255),
-                 color_hover=(200, 200, 200)):
+    def __init__(self, display, text="", posX=0, posY=0, width=100, height=50, color=(255, 255, 255), color_hover=(200, 200, 200)):
         self.display = display
         self.text = text
         self.posX = posX
@@ -37,7 +37,7 @@ class Button:
     # Metódusok
 
     def initMouse(self):
-        if self.display != None:
+        if self.display is not None:
             self.mouseListener = MouseListener()
 
     # Új pozíció beállítása
@@ -93,6 +93,7 @@ class Button:
             if self.mouseListener.onClick:
                 try:
                     self.clicked()
+                    self.mouseListener.onClick = False
                 except AttributeError:
                     print("[Button] Click absztrakt metódus nincs kifejtve!")
 
@@ -100,10 +101,16 @@ class Button:
             # Nincs rajt a kurzor
             pygame.draw.rect(self.display.display, self.color, (self.posX, self.posY, self.width, self.height))
 
-        self.font = pygame.font.Font(self.fontPath, self.font_size)
+        self.font = pygame.font.Font(self.fontPath(), self.font_size)
         textSurface, textBox = self.getTextSurface(self.text, self.font)
         textBox.center = ((self.posX + (self.width / 2)), (self.posY + (self.height / 2)))
         self.display.display.blit(textSurface, textBox)
+
+    def fontPath(self):
+        path = str(Path(os.getcwd()).parent) + '/ParentClasses/assets/calibrib.ttf'
+        while path.__contains__("\\"):
+            path = path.replace("\\", "/")
+        return path
 
     # Klikkesedésnél fut le
     @abstractmethod

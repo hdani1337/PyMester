@@ -4,8 +4,8 @@ import pygame
 
 
 class Actor:
-    sprite = ""
-    display = ""
+    sprite = None
+    display = None
     posX = 0  # X koordináta
     posY = 0  # Y koordináta
     width = 0  # Szélesség pixelekben

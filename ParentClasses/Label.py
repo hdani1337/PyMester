@@ -1,10 +1,13 @@
+import os
+from pathlib import Path
+
 import pygame
 
 
 class Label:
     display = None
     text = ""
-    textRenderer = ""
+    textRenderer = None
     posX = 0
     posY = 0
     color = (255, 255, 255)
@@ -12,13 +15,19 @@ class Label:
     # Üres szöveg, 18-as betűméret fehér színnel, (0,0) pozíció
     def __init__(self, display, text=""):
         self.text = text
-        font = pygame.font.Font('E:/Python/Mester/ParentClasses/assets/calibrib.ttf', 18)
+        path = str(Path(os.getcwd()).parent) + '/ParentClasses/assets/calibrib.ttf'
+        while path.__contains__("\\"):
+            path = path.replace("\\","/")
+        font = pygame.font.Font(path, 18)
         self.textRenderer = font.render(self.text, True, (255, 255, 255))
         self.display = display
 
     # Label szövegének módosítása
     def setText(self, text):
-        font = pygame.font.Font('E:/Python/Mester/ParentClasses/assets/calibrib.ttf', 18)
+        path = str(Path(os.getcwd()).parent) + '/ParentClasses/assets/calibrib.ttf'
+        while path.__contains__("\\"):
+            path = path.replace("\\", "/")
+        font = pygame.font.Font(path, 18)
         self.textRenderer = font.render(text, True, (255, 255, 255))
         self.text = text
 
