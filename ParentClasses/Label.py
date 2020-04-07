@@ -10,6 +10,7 @@ class Label:
     textRenderer = None
     posX = 0
     posY = 0
+    fontSize = 18
     color = (255, 255, 255)
 
     # Üres szöveg, 18-as betűméret fehér színnel, (0,0) pozíció
@@ -17,8 +18,8 @@ class Label:
         self.text = text
         path = str(Path(os.getcwd()).parent) + '/ParentClasses/assets/calibrib.ttf'
         while path.__contains__("\\"):
-            path = path.replace("\\","/")
-        font = pygame.font.Font(path, 18)
+            path = path.replace("\\", "/")
+        font = pygame.font.Font(path, self.fontSize)
         self.textRenderer = font.render(self.text, True, (255, 255, 255))
         self.display = display
 
@@ -27,9 +28,13 @@ class Label:
         path = str(Path(os.getcwd()).parent) + '/ParentClasses/assets/calibrib.ttf'
         while path.__contains__("\\"):
             path = path.replace("\\", "/")
-        font = pygame.font.Font(path, 18)
+        font = pygame.font.Font(path, self.fontSize)
         self.textRenderer = font.render(text, True, (255, 255, 255))
         self.text = text
+
+    # Label méretét visszaadja pixelekben
+    def getWidth(self):
+        return self.fontSize * len(self.text)/2
 
     # Label betűtípusának módosítása
     def setFont(self, fontPath):
@@ -40,6 +45,18 @@ class Label:
     def setPosition(self, posX, posY):
         self.posX = posX
         self.posY = posY
+
+    # Középre állítás
+    def setToCenter(self):
+        self.setPosition(self.display.displayWidth / 2 - self.getWidth() / 2, self.display.displayHeight / 2 - self.fontSize / 2)
+
+    # Középre helyezés horizontálisan (X tengelyen)
+    def setToCenterHorizontally(self):
+        self.setX(self.display.displayWidth / 2 - self.getWidth() / 2)
+
+    # Középre helyezés vertikálisan (Y tengelyen)
+    def setToCenterVertically(self):
+        self.setY(self.display.displayHeight / 2 - self.fontSize / 2)
 
     # Új pozíció beállítása az X tengelyen
     def setX(self, posX):
